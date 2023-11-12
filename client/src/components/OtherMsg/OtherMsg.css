@@ -1,0 +1,16 @@
+.otherMsg{
+    background-color: #d9d9d9;
+    padding: 10px;
+    margin: 5px;
+    width: max-content;
+    margin-top: 10px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+.otherMsgContent{
+    display: flex;
+    flex-direction: column;
+}

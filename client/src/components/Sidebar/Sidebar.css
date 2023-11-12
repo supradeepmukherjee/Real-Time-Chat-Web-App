@@ -1,0 +1,94 @@
+.sidebar {
+    flex: .3;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar>div {
+    box-shadow: rgba(50, 50, 93, .25) 0 6px 12px -2px, rgba(0, 0, 0, .3) 0 3px 7px -3px;
+}
+
+.sidebarHeader {
+    background-color: #fff;
+    padding: 10px 5px;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+.sidebarSearch {
+    background-color: #fff;
+    padding: 5px 10px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+#search {
+    border: none;
+    outline: none;
+    font-size: 1.25rem;
+    margin-left: 10px;
+}
+
+.sidebarConversations {
+    background-color: #fff;
+    padding: 5px 10px;
+    margin: 10px;
+    flex: 1;
+    overflow: auto;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+@media screen and (max-width:40em) {
+    .sidebar {
+        height: 98%;
+        flex: 0;
+    }
+
+    .sidebarHeader {
+        flex-direction: column;
+        flex: 1;
+        padding: 0;
+        margin: 5px;
+        align-items: space-evenly;
+    }
+
+    .sidebarHeader>div:first-child {
+        display: flex;
+        height: 20%;
+    }
+
+    .sidebarHeader>div:first-child>button {
+        align-self: flex-end;
+    }
+
+    .sidebarHeader>div:last-child {
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .sidebarSearch {
+        display: none;
+    }
+
+    .sidebarConversations {
+        display: none;
+    }
+}

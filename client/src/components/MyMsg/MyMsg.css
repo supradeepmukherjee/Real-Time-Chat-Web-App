@@ -1,0 +1,28 @@
+.myMsg {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.msgBox {
+    display: flex;
+    background-color: #63d7b0;
+    width: max-content;
+    flex-direction: column;
+    padding: 10px;
+    margin: 5px;
+    max-width: 60vw;
+    overflow-wrap: break-word;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+.myMsgTime {
+    align-self: flex-end;
+    font-size: .75rem;
+    font-weight: lighter;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
