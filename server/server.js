@@ -1,6 +1,6 @@
 import app from './app.js';
-// import { connectDatabase } from './config/database.js';
+import { connectDatabase } from './config/database.js';
 
-// connectDatabase()
+connectDatabase()
 
 app.listen(process.env.PORT, () => console.log(process.env.PORT))

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import jwt from 'jsonwebtoken'
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -13,9 +14,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    img: String
+    chavi: String
 },
     { timestamps: true }
 )
 
-export const Model = mongoose.model('ChatUser', userSchema)
+userSchema.methods.generateToken = async function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET)
+}
+
+export const User = mongoose.model('ChatUser', userSchema)
