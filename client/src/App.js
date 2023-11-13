@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
-import Entry from './components/Entry/Entry';
+import RegisterLogin from './components/RegisterLogin/RegisterLogin';
 import Welcome from './components/Welcome/Welcome';
 import ChatArea from './components/ChatArea/ChatArea';
 import Users from './components/Users_Groups/Users';
@@ -18,9 +18,9 @@ function App() {
     <Router>
       <div className={`app ${dark && 'dark lightShadow'}`}>
         <div className={`main ${dark && 'dark lightShadow'}`}>
-          <Sidebar />
+          {/* <Sidebar /> */}
           <Routes>
-            <Route exact path='/' element={<Entry />} />
+            <Route exact path='/' element={<RegisterLogin />} />
             <Route exact path='/welcome' element={<Welcome />} />
             <Route exact path='/chat' element={<ChatArea name={'nskfjnkjsnkjkjjjkglnjbijh i '} />} />
             <Route exact path='/users' element={<Users />} />
