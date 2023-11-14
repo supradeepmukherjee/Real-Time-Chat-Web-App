@@ -10,7 +10,7 @@ import Chat from '../Chat/Chat'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleTheme } from '../../Slices/Theme'
+import { toggleTheme } from '../../Theme'
 import './Sidebar.css'
 
 const Sidebar = () => {

@@ -28,11 +28,37 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body
         const user = await User.findOne({ email }).select('+password')
-        if (!user) return res.status(400).json({ success: false, msg: 'User or Password is incorrect' }) 
+        if (!user) return res.status(400).json({ success: false, msg: 'User or Password is incorrect' })
         const isMatch = await user.matchPassword(password)
         if (!isMatch) return res.status(400).json({ success: false, msg: 'User or Password is incorrect' })
         const token = await user.generateToken()
         res.status(200).cookie('token', token, { expires: new Date(Date.now() + (90 * 24 * 60 * 60000)) }).json({ success: true, user, token })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, msg: err.msg })
+    }
+}
+
+export const allUsers = async (req, res) => {
+    try {
+        const keyword = req.query.search ?
+            {
+                $or: [
+                    {
+                        name: {
+                            $regex: req.query.search,
+                            $options: 'i'
+                        },
+                        email: {
+                            $regex: req.query.search,
+                            $options: 'i'
+                        }
+                    }
+                ]
+            }
+            : {}
+        const users = await User.find(keyword).find({ _id: { $ne: req.user._id } })
+        res.status(200).json({ users, success: true })
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, msg: err.msg })

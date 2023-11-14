@@ -23,9 +23,9 @@ const RegisterLogin = () => {
                     <img src="/icon-512.png" alt="Logo" className='welcomeLogo' />
                 </div>
                 <div className="entryBox">
-                    <p>
+                    <h1>
                         {login ? 'Login to your Account' : 'Create your Account'}
-                    </p>
+                    </h1>
                     <TextField id='standard-basic' label='Name' variant='outlined' name='name' onChange={changeHandler} />
                     {!login && <TextField id='standard-basic' label='Email' variant='outlined' name='email' onChange={changeHandler} />}
                     <TextField id='outlined-password-input' label='Password' type='password' autoComplete='current-password' name='password' onChange={changeHandler} />
@@ -34,7 +34,7 @@ const RegisterLogin = () => {
                     </Button>
                     <p>
                         {login ? 'Don\'t' : 'Already'} have an account?
-                        <span className='hyper' onClick={() => setLogin(!login)}>  {login ? 'Sign Up' : 'Log In'}</span>
+                        <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setLogin(!login)}>  {login ? 'Sign Up' : 'Log In'}</span>
                     </p>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import themeReducer from './Slices/Theme'
+import themeReducer from './Theme'
 
 const store = configureStore({
     reducer: {
