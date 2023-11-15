@@ -6,6 +6,11 @@ const msgSchema = new mongoose.Schema({
         ref: 'ChatUser',
         required: true
     },
+    content: {
+        type: String,
+        required: true,
+        trim: true
+    },
     receiver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ChatUser',

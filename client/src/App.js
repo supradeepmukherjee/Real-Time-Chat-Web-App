@@ -11,7 +11,7 @@ import GroupsJoined from './components/Users_Groups/GroupsJoined';
 import { useSelector } from 'react-redux';
 import './App.css'
 
-// TODO: Improve Dark Mode, Make it responsive
+// TODO: Improve Dark Mode, Make it responsive, complete chat controllers
 function App() {
   const dark = useSelector(state => state.dark)
   return (

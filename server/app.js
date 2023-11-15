@@ -6,6 +6,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import user from './routes/user.js'
+import msg from './routes/msg.js'
+import auth from './middlewares/auth.js'
 
 const app = express()
 
@@ -17,7 +19,8 @@ app.use(cors())
 app.use(cookieParser())
 
 app.use('/api/user', user)
-
+app.use('/api/chat', auth, chat)
+app.use('/api/msg', auth, msg)
 
 export default app
 // cd /d "D:/webd/React Projects/Chat/server"

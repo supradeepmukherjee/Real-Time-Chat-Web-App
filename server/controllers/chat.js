@@ -88,3 +88,19 @@ export const exitGrp = async (req, res) => {
         res.status(500).json({ success: false, msg: err.msg })
     }
 }
+
+export const addSelfToGrp = async (req, res) => {
+    try {
+        const { chatID, userID } = req.body
+        const chat = await Chat.findByIdAndUpdate(chatID,
+            { $push: { users: userID } },
+            { new: true }
+        )
+            .populate('users')
+            .populate('grpAdmin')
+        res.status(200).json({ success: true, chat })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, msg: err.msg })
+    }
+}
