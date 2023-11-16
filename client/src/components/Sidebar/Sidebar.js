@@ -5,6 +5,7 @@ import NewGroup from '@mui/icons-material/GroupAdd'
 import Nightlight from '@mui/icons-material/Nightlight'
 import LightMode from '@mui/icons-material/LightMode'
 import Search from '@mui/icons-material/Search'
+import Notification from '@mui/icons-material/Notifications'
 import { IconButton, Tooltip } from "@mui/material";
 import Chat from '../Chat/Chat'
 import { useState } from 'react'
@@ -17,9 +18,9 @@ const Sidebar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const dark = useSelector(state => state.dark)
-  const [chats, setChats] = useState([
-
-  ])
+  const [chats, setChats] = useState([])
+  const [search, setSearch] = useState('')
+  const [searchResults, setSearchResults] = useState('')
   return (
     <div className='sidebar'>
       <div className={`sidebarHeader ${dark && 'dark'}`}>
@@ -44,6 +45,11 @@ const Sidebar = () => {
           <Tooltip title="Create New Group" arrow>
             <IconButton onClick={() => navigate('/creategrp')}>
               <NewGroup className={dark && 'dark'} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Notifications" arrow>
+            <IconButton onClick={() => navigate('/')}>
+              <Notification className={dark && 'dark'} />
             </IconButton>
           </Tooltip>
           <Tooltip title={dark ? 'Light Mode' : "Dark Mode"} arrow>

@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import user from './routes/user.js'
 import msg from './routes/msg.js'
+import chat from './routes/chat.js'
 import auth from './middlewares/auth.js'
 
 const app = express()

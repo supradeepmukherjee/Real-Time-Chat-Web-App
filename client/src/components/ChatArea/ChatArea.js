@@ -4,8 +4,17 @@ import Send from "@mui/icons-material/Send";
 import './ChatArea.css'
 import MyMsg from "../MyMsg/MyMsg";
 import OtherMsg from "../OtherMsg/OtherMsg";
+import io from 'socket.io-client'
+import { useEffect, useState } from "react";
 
+let socket
 const ChatArea = ({ name, time }) => {
+  const [socketConnectionStatus, setSocketConnectionStatus] = useState(false)
+  useEffect(() => {
+    socket = io('/')
+    socket.emit('setup',)//userdata after ,
+    socket.on('connection', () => setSocketConnectionStatus(!socketConnectionStatus))
+  }, [socketConnectionStatus])
   return (
     <div className='chatArea'>
       <div className="chatAreaHeader">
@@ -34,7 +43,7 @@ const ChatArea = ({ name, time }) => {
         <OtherMsg name={'dusra koi'} msg='sending a new msg to test this component' time='10:00' />
         <OtherMsg name={'dusra koi'} msg='sending a new msg to test this component' time='10:00' />
         <OtherMsg name={'dusra koi'} msg='sending a new msg to test this component' time='10:00' />
-        <OtherMsg name={'dusra koi'} msg='sending a new msg to test this component' time='10:00'ddd />
+        <OtherMsg name={'dusra koi'} msg='sending a new msg to test this component' time='10:00' ddd />
       </div>
       <div className="chatAreaInput">
         <input type="text" placeholder="Send a Message" name="" id="search" />
@@ -44,6 +53,6 @@ const ChatArea = ({ name, time }) => {
       </div>
     </div>
   )
-} 
+}
 
 export default ChatArea

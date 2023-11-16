@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { fetchMsgs, sendMsg } from '../controllers/msg'
+import { fetchMsgs, sendMsg } from '../controllers/msg.js'
 
 const router = Router()
 

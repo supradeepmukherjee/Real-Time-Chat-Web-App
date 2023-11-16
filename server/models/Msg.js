@@ -11,10 +11,10 @@ const msgSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    receiver: {
+    readBy: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ChatUser',
-    },
+    }],
     chat: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat',

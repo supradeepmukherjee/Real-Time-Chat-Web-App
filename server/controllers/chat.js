@@ -14,7 +14,7 @@ export const accessChat = async (req, res) => {
             .populate('users').populate('latestMsg')
         chat = await User.populate(chat, {
             path: 'latestMsg.sender',
-            select: 'name email'
+            select: 'name email chavi'
         })
         if (chat.length > 0) return res.status(200).json({ success: true, chat: chat[0] })
         else {
@@ -41,19 +41,9 @@ export const fetchChats = async (req, res) => {
             .sort({ updatedAt: -1 })
         chat = await User.populate(chat, {
             path: 'latestMsg.sender',
-            select: 'name email'
+            select: 'name chavi email'
         })
         res.status(200).json({ success: true, chat })
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ success: false, msg: err.msg })
-    }
-}
-
-export const fetchGrps = async (req, res) => {
-    try {
-        const grps = await Chat.where('isGrpChat').equals(true)
-        res.status(200).json({ success: true, grps })
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, msg: err.msg })
@@ -78,10 +68,15 @@ export const createGrp = async (req, res) => {
     }
 }
 
-export const exitGrp = async (req, res) => {
+export const removeFromGrp = async (req, res) => {
     try {
         const { chatID, userID } = req.body
-        const exited = await Chat.findByIdAndUpdate().populate('users').populate('grpAdmin')
+        const exited = await Chat.findByIdAndUpdate(chatID,
+            { $pull: { users: userID } },
+            { new: true }
+        )
+            .populate('users')
+            .populate('grpAdmin')
         res.status(200).json({ success: true, exited })
     } catch (err) {
         console.log(err);
@@ -89,7 +84,7 @@ export const exitGrp = async (req, res) => {
     }
 }
 
-export const addSelfToGrp = async (req, res) => {
+export const addToGrp = async (req, res) => {
     try {
         const { chatID, userID } = req.body
         const chat = await Chat.findByIdAndUpdate(chatID,
@@ -99,6 +94,17 @@ export const addSelfToGrp = async (req, res) => {
             .populate('users')
             .populate('grpAdmin')
         res.status(200).json({ success: true, chat })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, msg: err.msg })
+    }
+}
+
+export const renameGrp = async (req, res) => {
+    try {
+        const { id, name } = req.body
+        const updatedGrp = await Chat.findByIdAndUpdate(id, { name }, { new: true }).populate('users').populate('grpAdmin')
+        res.status(200).json({ success: true, updatedGrp })
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, msg: err.msg })

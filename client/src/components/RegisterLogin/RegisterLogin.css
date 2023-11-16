@@ -1,7 +1,6 @@
 .entry {
-    height: 90vh;
-    width: 90vw;
     background-color: #f4f5f8;
+    width: 100%;
     display: flex;
     box-shadow: rgba(100, 100, 111, .2) 0 7px 29px 0;
     border-radius: 20px;
