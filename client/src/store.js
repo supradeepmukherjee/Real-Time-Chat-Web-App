@@ -1,9 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import themeReducer from './Theme'
+import { passwordReducer, updateMyProfileReducer, userProfileReducer, userReducer } from './Reducers/User'
+import { themeReducer } from './Theme'
 
 const store = configureStore({
     reducer: {
-        dark: themeReducer
+        dark: themeReducer,
+        user: userReducer,
+        userProfile: userProfileReducer,
+        updateMyProfile: updateMyProfileReducer,
+        password: passwordReducer,
     },
     // devTools: false
 })

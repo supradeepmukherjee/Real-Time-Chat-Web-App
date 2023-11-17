@@ -64,3 +64,13 @@ export const allUsers = async (req, res) => {
         res.status(500).json({ success: false, msg: err.msg })
     }
 }
+
+export const myProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        res.status(200).json({ success: true, user, msg: 'User fetched successfully' })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, msg: err.msg })
+    }
+}

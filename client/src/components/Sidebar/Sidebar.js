@@ -11,7 +11,7 @@ import Chat from '../Chat/Chat'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleTheme } from '../../Theme'
+import { darkTheme,lightTheme } from '../../Theme'
 import './Sidebar.css'
 
 const Sidebar = () => {
@@ -54,7 +54,7 @@ const Sidebar = () => {
           </Tooltip>
           <Tooltip title={dark ? 'Light Mode' : "Dark Mode"} arrow>
             <IconButton
-              onClick={() => dispatch(toggleTheme())}
+              // onClick={() => dispatch(toggleTheme())}
             >
               {dark ? <LightMode className={dark && 'dark'} /> : <Nightlight />}
             </IconButton>

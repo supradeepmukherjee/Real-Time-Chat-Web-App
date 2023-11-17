@@ -17,7 +17,8 @@
     align-items: center;
 }
 
-.entryBox {
+.entryBox,
+.entryBox>form {
     flex: .7;
     background-color: #fff;
     margin: 10px;
