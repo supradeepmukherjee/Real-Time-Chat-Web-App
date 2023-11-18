@@ -10,7 +10,7 @@ export const themeReducer = createReducer(initialState, builder => {
         state.darkTheme = false
     })
     builder.addCase(changeTheme, state => {
-        state.darkTheme = false
+        state.darkTheme = true
     })
 })
 

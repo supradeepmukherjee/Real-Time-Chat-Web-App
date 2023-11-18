@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
 import RegisterLogin from './components/RegisterLogin/RegisterLogin';
-import Welcome from './components/Welcome/Welcome';
+import Home from './components/Home/Home';
 import Error404 from './components/Error404/Error404';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css'
@@ -20,7 +20,7 @@ function App() {
       <div className={`app ${dark && 'dark lightShadow'}`}>
         <div className={`main ${dark && 'dark lightShadow'}`}>
           <Routes>
-            <Route exact path='/' element={isAuthenticated ? <Welcome /> : <RegisterLogin />} />
+            <Route exact path='/' element={isAuthenticated ? <Home /> : <RegisterLogin />} />
             <Route exact path='*' element={<Error404 />} />
           </Routes >
         </div>

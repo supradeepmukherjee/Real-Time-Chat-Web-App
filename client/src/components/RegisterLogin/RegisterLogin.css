@@ -30,9 +30,47 @@
     align-items: center;
     flex-direction: column;
     gap: 20px;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+}
+
+.registerImg {
+    display: flex;
+    align-items: center;
+}
+
+.registerImg>img {
+    width: 3vmax;
+    height: 3vmax;
+    margin-right: 1vw;
+    border-radius: 100%;
+}
+
+.registerImg>input {
+    display: flex !important;
+    padding: 0 !important;
+    width: 12.5vmax;
+    border: 1px solid #00000045;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font: 300 1vmax cursive;
+    outline: none;
+}
+
+.registerImg>input::file-selector-button {
+    cursor: pointer;
+    width: 100%;
+    z-index: 2;
+    height: 5vh;
+    border: none;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: .8rem;
+    font-weight: 400;
+    transition: all .2s;
+    padding: 0!important;
+    color: #0000009e;
+    background-color: #fff;
+}
+
+.registerImg>input::file-selector-button:hover {
+    background-color: #eaeaea;
 }

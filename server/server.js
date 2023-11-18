@@ -1,10 +1,18 @@
 import app from './app.js';
 import { createServer } from 'node:http';
+import cloud from 'cloudinary'
 import { Server } from 'socket.io';
 import { connectDatabase } from './config/database.js';
 
 const server = createServer(app);
 const io = new Server(server, { cors: { origin: "http://localhost:3000" } })
+
+cloud.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API,
+    api_secret: process.env.CLOUDINARY_SECRET,
+})
+
 connectDatabase()
 
 io.on('connection', (socket) => {

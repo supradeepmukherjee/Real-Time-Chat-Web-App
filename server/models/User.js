@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
+        minLength: [5, 'Name must be of minimum 5 characters'],
         required: [true, "Please enter a name"]
     },
     email: {
@@ -15,7 +16,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Please enter a password'],
-        minLength: [true, 'Password must be atleast 6 characters long'],
+        minLength: [8, 'Password must be of minimum 8 characters'],
         select: false
     },
     isAdmin: {

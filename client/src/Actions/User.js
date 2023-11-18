@@ -3,7 +3,7 @@ import axios from 'axios'
 export const registerUser = (name, email, password, chavi) => async dispatch => {
     try {
         dispatch({ type: 'registerRequest' })
-        const { data } = await axios.post('/api/register', { name, email, password, chavi }, { headers: { 'Content-Type': 'application/json' } })
+        const { data } = await axios.post('/api/user/register', { name, email, password, chavi }, { headers: { 'Content-Type': 'application/json' } })
         dispatch({
             type: 'registerSuccess',
             payload: data.user
@@ -20,7 +20,7 @@ export const registerUser = (name, email, password, chavi) => async dispatch => 
 export const loginUser = (email, password) => async dispatch => {
     try {
         dispatch({ type: 'loginRequest' })
-        const { data } = await axios.post('/api/login', { email, password }, { headers: { 'Content-Type': 'application/json' } })
+        const { data } = await axios.post('/api/user/login', { email, password }, { headers: { 'Content-Type': 'application/json' } })
         dispatch({
             type: 'loginSuccess',
             payload: data.user
@@ -51,10 +51,10 @@ export const loadUser = () => async dispatch => {
     }
 }
 
-export const allUsers = () => async dispatch => {
+export const allUsers = name => async dispatch => {
     try {
         dispatch({ type: 'allUsersRequest' })
-        const { data } = await axios.get('/api/admin/users')
+        const { data } = await axios.get(`/api/user/users?name=${name}`)
         dispatch({
             type: 'allUsersSuccess',
             payload: data.users
