@@ -1,6 +1,5 @@
 import Search from '@mui/icons-material/Search'
 import { IconButton } from '@mui/material'
-import './Users_Groups.css'
 
 const Users = () => {
     return (

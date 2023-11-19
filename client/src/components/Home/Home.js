@@ -7,14 +7,14 @@ import './Home.css'
 const Home = () => {
   const { user } = useSelector(state => state.user)
   const { darkTheme: dark } = useSelector(state => state.dark)
-  const [chat, setChat] = useState(false)
+  const { welcomeScreen } = useSelector(state => state.welcome)
   const [fetchNow, setFetchNow] = useState(false)
   return (
     <>
       {user &&
         <>
-          <Sidebar fetchNow={fetchNow} setChat={setChat} />
-          {chat ?
+          <Sidebar fetchNow={fetchNow} />
+          {!welcomeScreen ?
             <ChatArea fetchNow={fetchNow} setFetchNow={setFetchNow} />
             :
             <div className={`welcome ${dark && 'dark'}`}>
@@ -22,7 +22,8 @@ const Home = () => {
               <p>
                 View and text directly to people present in the chat rooms
               </p>
-            </div>}
+            </div>
+          }
         </>}
     </>
   )

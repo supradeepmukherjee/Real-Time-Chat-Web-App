@@ -16,3 +16,20 @@ export const getChats = name => async dispatch => {
         })
     }
 }
+
+export const accessChat_ = id => async dispatch => {
+    try {
+        dispatch({ type: 'accessChatRequest' })
+        const { data } = await axios.post(`/api/chat/chat/${id}`)
+        dispatch({
+            type: 'accessChatSuccess',
+            payload: data.chat
+        })
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: 'accessChatFailure',
+            payload: err.response.data.msg
+        })
+    }
+}

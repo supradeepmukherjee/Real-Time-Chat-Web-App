@@ -47,7 +47,7 @@ export const allUsers = async (req, res) => {
                 $regex: req.query.name,
                 $options: 'i'
             },
-            _id: { $ne: req.user._id }
+            // _id: { $ne: req.user._id }
         })
         res.status(200).json({ users, success: true })
     } catch (err) {

@@ -12,19 +12,19 @@ import Chat from '../Chat/Chat'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getChats } from '../../Actions/Chat'
-import { darkTheme, lightTheme } from '../../Theme'
+import { darkTheme, lightTheme } from '../../Slices/Theme'
 import Alert from '../Alert'
-import Loader from '../Loader/Loader'
 import alert from '../../alert'
 import './Sidebar.css'
 import Box from '../Box'
 
-const Sidebar = () => {
+const Sidebar = ({ fetchNow }) => {
   const dispatch = useDispatch()
   const { darkTheme: dark } = useSelector(state => state.dark)
-  const { loading, chats, error } = useSelector(state => state.chat)
+  const { chats, error } = useSelector(state => state.chat)
+  const { user } = useSelector(state => state.user)
   const [open, setOpen] = useState(false)
-  const [box, setBox] = useState(1)
+  const [box, setBox] = useState(0)
   const [search, setSearch] = useState('')
   const [alertVisibility, setAlertVisibility] = useState('hidden')
   const [alertMsg, setAlertMsg] = useState('')
@@ -34,10 +34,10 @@ const Sidebar = () => {
       dispatch(getChats(search))
     }, 1200);
     return () => clearTimeout(wait)
-  }, [dispatch, search])
+  }, [dispatch, search, fetchNow])
   useEffect(() => {
     if (error) alert('error', setAlertType, error, setAlertMsg, setAlertVisibility, dispatch)
-  }, [dispatch, error])
+  }, [dispatch, error, fetchNow])
   return (
     <>
       <Alert alertVisibility={alertVisibility} alertMsg={alertMsg} alertType={alertType} />
@@ -45,34 +45,52 @@ const Sidebar = () => {
         <div className={`sidebarHeader ${dark && 'dark'}`}>
           <div className="">
             <Tooltip title="My Profile" arrow>
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton onClick={() => {
+                setOpen(true)
+                setBox(1)
+              }}>
                 <User className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Log Out" arrow>
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton onClick={() => {
+                setOpen(true)
+                setBox(2)
+              }}>
                 <Logout className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
           </div>
           <div className="">
             <Tooltip title="New Chat" arrow>
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton onClick={() => {
+                setOpen(true)
+                setBox(3)
+              }}>
                 <PersonAdd className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Groups Joined" arrow>
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton onClick={() => {
+                setOpen(true)
+                setBox(4)
+              }}>
                 <Group className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Create New Group" arrow>
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton onClick={() => {
+                setOpen(true)
+                setBox(5)
+              }}>
                 <NewGroup className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Notifications" arrow>
-              <IconButton onClick={() => setOpen(true)}>
+              <IconButton onClick={() => {
+                setOpen(true)
+                setBox(6)
+              }}>
                 <Notification className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
@@ -92,10 +110,19 @@ const Sidebar = () => {
           <input placeholder='Search' type="text" name="search" id="search" className={dark && 'dark'} value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <div className={`sidebarConversations ${dark && 'dark'}`}>
-          {chats?.map(chat => <Chat msg={chat.latestMsg} time='today' name={chat.name} />)}
+          {chats?.map(chat => <Chat
+            msg={chat.latestMsg}
+            time='today'
+            name={chat.isGrp ?
+              chat.name
+              :
+              (chat.users[0]._id === user?._id ? chat.users[1].name : chat.users[0].name)
+            }
+            chavi={chat.chavi} />)}
+          <Chat msg={'chat.latestMsg'} time='today' name={'chat.name'} chavi={'chat.chavi'} />
         </div>
       </div>
-      <Box open={open} setOpen={setOpen} text={'Start Chat with a new User'} confirm={''} box={box} />
+      <Box open={open} setOpen={setOpen} text={'Start Chat with a new User'} confirm={box === 2 ? 'Logout' : 'Create'} box={box} />
     </>
   )
 }

@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router-dom'
 import './Chat.css'
+import { chatStarted } from '../../Slices/Welcome'
+import { useDispatch } from 'react-redux'
 
-const Chat = ({ msg, time, name }) => {
-  const navigate = useNavigate()
+const Chat = ({ msg, time, name, chavi }) => {
+  const dispatch = useDispatch()
   return (
-    <div className='chat' onClick={() => navigate('/chat')} >
+    <div className='chat' onClick={() => dispatch(chatStarted())}>
       <p className="chatPhoto">
         {name[0]}
       </p>

@@ -6,9 +6,9 @@ const allChatsFailure = createAction('allChatsFailure')
 const productDetailsRequest = createAction('productDetailsRequest')
 const productDetailsSuccess = createAction('productDetailsSuccess')
 const productDetailsFailure = createAction('productDetailsFailure')
-const newReviewRequest = createAction('newReviewRequest')
-const newReviewSuccess = createAction('newReviewSuccess')
-const newReviewFailure = createAction('newReviewFailure')
+const accessChatRequest = createAction('accessChatRequest')
+const accessChatSuccess = createAction('accessChatSuccess')
+const accessChatFailure = createAction('accessChatFailure')
 const delReviewRequest = createAction('delReviewRequest')
 const delReviewSuccess = createAction('delReviewSuccess')
 const delReviewFailure = createAction('delReviewFailure')
@@ -42,6 +42,17 @@ export const chatReducer = createReducer(initialState, builder => {
         state.loading = false
         state.error = action.payload
     })
+    builder.addCase(accessChatRequest, state => {
+        state.loading = true
+    })
+    builder.addCase(accessChatSuccess, (state, action) => {
+        state.loading = false
+        state.chat = action.payload
+    })
+    builder.addCase(accessChatFailure, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+    })
     builder.addCase(clearMsg, state => {
         state.msg = null
     })
@@ -68,17 +79,6 @@ export const productDetailsReducer = createReducer(initialState, builder => {
 })
 
 export const reviewReducer = createReducer(initialState, builder => {
-    builder.addCase(newReviewRequest, state => {
-        state.loading = true
-    })
-    builder.addCase(newReviewSuccess, (state, action) => {
-        state.loading = false
-        state.review = action.payload
-    })
-    builder.addCase(newReviewFailure, (state, action) => {
-        state.loading = false
-        state.error = action.payload
-    })
     builder.addCase(delReviewRequest, state => {
         state.loading = true
     })
