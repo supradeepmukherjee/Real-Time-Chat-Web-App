@@ -1,14 +1,18 @@
 import './Chat.css'
 import { chatStarted } from '../../Slices/Welcome'
 import { useDispatch } from 'react-redux'
+import { selectChat } from '../../Slices/CurrentChat'
 
-const Chat = ({ msg, time, name, chavi }) => {
+const Chat = ({ msg, time, name, chavi, chat }) => {
   const dispatch = useDispatch()
   return (
-    <div className='chat' onClick={() => dispatch(chatStarted())}>
-      <p className="chatPhoto">
-        {name[0]}
-      </p>
+    <div
+      className='chat'
+      onClick={() => {
+        dispatch(selectChat(chat))
+        dispatch(chatStarted())
+      }}>
+      <img src={chavi} alt="chavi" className="chatPhoto" />
       <p className="chatTitle">
         {name}
       </p>

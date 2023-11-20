@@ -5,20 +5,20 @@ import { Msg } from '../models/Msg.js'
 export const sendMsg = async (req, res) => {
     try {
         const { id, content } = req.body
-        let newMsg = await Msg.create({
+        let msg = await Msg.create({
             sender: req.user._id,
             content,
             chat: id
         })
-        newMsg = await Msg.populate('sender', 'name')
-        newMsg = await Msg.populate('receiver')
-        newMsg = await Msg.populate('chat')
-        newMsg = await User.populate(newMsg, {
+        msg = await Msg.populate('sender', 'name')
+        msg = await Msg.populate('receiver')
+        msg = await Msg.populate('chat')
+        msg = await User.populate(msg, {
             path: 'chat.users',
             select: 'name email'
         })
-        await Chat.findByIdAndUpdate(req.body.id, { latestMsg: newMsg })
-        res.status(200).json({ success: true, newMsg })
+        await Chat.findByIdAndUpdate(req.body.id, { latestMsg: msg })
+        res.status(200).json({ success: true, msg })
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, msg: err.msg })

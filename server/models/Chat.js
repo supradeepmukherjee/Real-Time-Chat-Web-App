@@ -7,8 +7,9 @@ const chatSchema = new mongoose.Schema({
     },
     isGrp: {
         type: Boolean,
-        default:false
+        default: false
     },
+    chavi: String,
     users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ChatUser',
@@ -17,7 +18,6 @@ const chatSchema = new mongoose.Schema({
     latestMsg: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Msg',
-        required: true
     },
     grpAdmin: {
         type: mongoose.Schema.Types.ObjectId,

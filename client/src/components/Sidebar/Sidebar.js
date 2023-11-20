@@ -111,6 +111,7 @@ const Sidebar = ({ fetchNow }) => {
         </div>
         <div className={`sidebarConversations ${dark && 'dark'}`}>
           {chats?.map(chat => <Chat
+            chat={chat}
             msg={chat.latestMsg}
             time='today'
             name={chat.isGrp ?
@@ -118,8 +119,12 @@ const Sidebar = ({ fetchNow }) => {
               :
               (chat.users[0]._id === user?._id ? chat.users[1].name : chat.users[0].name)
             }
-            chavi={chat.chavi} />)}
-          <Chat msg={'chat.latestMsg'} time='today' name={'chat.name'} chavi={'chat.chavi'} />
+            chavi={chat.isGrp ?
+              chat.chavi
+              :
+              (chat.users[0]._id === user?._id ? chat.users[1].chavi : chat.users[0].chavi)
+            }
+            key={chat._id} />)}
         </div>
       </div>
       <Box open={open} setOpen={setOpen} text={'Start Chat with a new User'} confirm={box === 2 ? 'Logout' : 'Create'} box={box} />

@@ -55,6 +55,10 @@
     -o-border-radius: 10px;
 }
 
+.chatAreaInput>input {
+    flex: 0.99;
+}
+
 @media screen and (max-width:40em) {
     .chatArea {
         flex: 1;

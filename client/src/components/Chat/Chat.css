@@ -27,19 +27,8 @@
 
 .chatPhoto {
     grid-area: 1/1/3/2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #d9d9d9;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2rem;
-    font-weight: bolder;
-    color: #fff;
-    height: 32px;
-    width: 32px;
-    padding: 2px;
-    justify-self: center;
-    align-self: center;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -49,6 +38,7 @@
 
 .chatTitle {
     grid-area: 1/2/2/4;
+    margin-left: 5px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 600;
 }
@@ -60,6 +50,7 @@
 }
 
 .chatMsg {
+    margin-left: 5px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: .75rem;
 }
