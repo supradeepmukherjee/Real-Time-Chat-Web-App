@@ -9,22 +9,12 @@ const productDetailsFailure = createAction('productDetailsFailure')
 const accessChatRequest = createAction('accessChatRequest')
 const accessChatSuccess = createAction('accessChatSuccess')
 const accessChatFailure = createAction('accessChatFailure')
+const newGrpRequest = createAction('newGrpRequest')
+const newGrpSuccess = createAction('newGrpSuccess')
+const newGrpFailure = createAction('newGrpFailure')
 const delReviewRequest = createAction('delReviewRequest')
 const delReviewSuccess = createAction('delReviewSuccess')
 const delReviewFailure = createAction('delReviewFailure')
-const adminProductsRequest = createAction('adminProductsRequest')
-const adminProductsSuccess = createAction('adminProductsSuccess')
-const adminProductsFailure = createAction('adminProductsFailure')
-const newProductRequest = createAction('newProductRequest')
-const newProductSuccess = createAction('newProductSuccess')
-const newProductFailure = createAction('newProductFailure')
-const delProductRequest = createAction('delProductRequest')
-const delProductSuccess = createAction('delProductSuccess')
-const delProductFailure = createAction('delProductFailure')
-const editProductRequest = createAction('editProductRequest')
-const editProductSuccess = createAction('editProductSuccess')
-const editProductFailure = createAction('editProductFailure')
-const clearMsg = createAction('clearMsg')
 const clearError = createAction('clearError')
 
 const initialState = {}
@@ -53,40 +43,14 @@ export const chatReducer = createReducer(initialState, builder => {
         state.loading = false
         state.error = action.payload
     })
-    builder.addCase(clearMsg, state => {
-        state.msg = null
-    })
-    builder.addCase(clearError, state => {
-        state.error = null
-    })
-})
-
-export const productDetailsReducer = createReducer(initialState, builder => {
-    builder.addCase(productDetailsRequest, state => {
+    builder.addCase(newGrpRequest, state => {
         state.loading = true
     })
-    builder.addCase(productDetailsSuccess, (state, action) => {
+    builder.addCase(newGrpSuccess, (state, action) => {
         state.loading = false
-        state.productDetails = action.payload
+        state.chat = action.payload
     })
-    builder.addCase(productDetailsFailure, (state, action) => {
-        state.loading = false
-        state.error = action.payload
-    })
-    builder.addCase(clearError, state => {
-        state.error = null
-    })
-})
-
-export const reviewReducer = createReducer(initialState, builder => {
-    builder.addCase(delReviewRequest, state => {
-        state.loading = true
-    })
-    builder.addCase(delReviewSuccess, (state, action) => {
-        state.loading = false
-        state.msg = action.payload
-    })
-    builder.addCase(delReviewFailure, (state, action) => {
+    builder.addCase(newGrpFailure, (state, action) => {
         state.loading = false
         state.error = action.payload
     })

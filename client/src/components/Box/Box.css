@@ -1,0 +1,17 @@
+.box {
+    margin: 0 5vw;
+}
+
+.box>h2 {
+    text-align: center;
+}
+
+.box>p {
+    text-align: center;
+}
+
+.box>p:first-of-type {
+    text-align: center;
+    margin-top: 3vh;
+    margin-bottom: 2vh;
+}

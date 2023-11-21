@@ -68,40 +68,6 @@ export const allUsers = name => async dispatch => {
     }
 }
 
-export const getUserProfile = userID => async dispatch => {
-    try {
-        dispatch({ type: 'userProfileRequest' })
-        const { data } = await axios.get(`/api/admin/user/${userID}`)
-        dispatch({
-            type: 'userProfileSuccess',
-            payload: data.user
-        })
-    } catch (err) {
-        console.log(err);
-        dispatch({
-            type: 'userProfileFailure',
-            payload: err.response.data.msg
-        })
-    }
-}
-
-export const viewUser = id => async dispatch => {
-    try {
-        dispatch({ type: 'userProfileRequest' })
-        const { data } = await axios.get(`/api/admin/user/${id}`)
-        dispatch({
-            type: 'userProfileSuccess',
-            payload: data.user
-        })
-    } catch (err) {
-        console.log(err);
-        dispatch({
-            type: 'userProfileFailure',
-            payload: err.response.data.msg
-        })
-    }
-}
-
 export const updateProfile = (name, email, chavi) => async dispatch => {
     try {
         dispatch({ type: 'updateProfileRequest' })
@@ -114,23 +80,6 @@ export const updateProfile = (name, email, chavi) => async dispatch => {
         console.log(err);
         dispatch({
             type: 'updateProfileFailure',
-            payload: err.response.data.msg
-        })
-    }
-}
-
-export const updateRole = (id, role) => async dispatch => {
-    try {
-        dispatch({ type: 'updateRoleRequest' })
-        const { data } = await axios.put(`/api/admin/updaterole/${id}`, { role }, { headers: { 'Content-Type': 'application/json' } })
-        dispatch({
-            type: 'updateRoleSuccess',
-            payload: data.user
-        })
-    } catch (err) {
-        console.log(err);
-        dispatch({
-            type: 'updateRoleFailure',
             payload: err.response.data.msg
         })
     }
@@ -187,49 +136,15 @@ export const resetPassword = (token, password) => async dispatch => {
     }
 }
 
-export const getShipInfo = () => async dispatch => {
-    try {
-        dispatch({ type: 'getShipInfoRequest' })
-        const { data } = await axios.get('/api/getship')
-        dispatch({
-            type: 'getShipInfoSuccess',
-            payload: data.shipInfo
-        })
-    } catch (err) {
-        console.log(err);
-        dispatch({
-            type: 'getShipInfoFailure',
-            payload: err.response.data.msg
-        })
-    }
-}
-
-export const saveShipInfo = (address, city, state, country, pincode, phone) => async dispatch => {
-    try {
-        dispatch({ type: 'saveShipInfoRequest' })
-        const { data } = await axios.put('/api/shipnow', { address, city, state, country, pincode, phone }, { headers: { 'Content-Type': 'application/json' } })
-        dispatch({
-            type: 'saveShipInfoSuccess',
-            payload: data.shipInfo
-        })
-    } catch (err) {
-        console.log(err);
-        dispatch({
-            type: 'saveShipInfoFailure',
-            payload: err.response.data.msg
-        })
-    }
-}
-
 export const logout = () => async dispatch => {
     try {
-        dispatch({ type: 'logoutUserRequest' })
-        await axios.get('/api/logout')
-        dispatch({ type: 'logoutUserSuccess' })
+        dispatch({ type: 'logoutRequest' })
+        await axios.get('/api/user/logout')
+        dispatch({ type: 'logoutSuccess' })
     } catch (err) {
         console.log(err);
         dispatch({
-            type: 'logoutUserFailure',
+            type: 'logoutFailure',
             payload: err.response.data.msg
         })
     }

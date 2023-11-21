@@ -1,6 +1,5 @@
 import User from '@mui/icons-material/AccountCircle'
 import PersonAdd from '@mui/icons-material/PersonAdd'
-import Group from '@mui/icons-material/Group'
 import NewGroup from '@mui/icons-material/GroupAdd'
 import Nightlight from '@mui/icons-material/Nightlight'
 import LightMode from '@mui/icons-material/LightMode'
@@ -16,15 +15,13 @@ import { darkTheme, lightTheme } from '../../Slices/Theme'
 import Alert from '../Alert'
 import alert from '../../alert'
 import './Sidebar.css'
-import Box from '../Box'
+import { selectBox } from '../../Slices/Box'
 
 const Sidebar = ({ fetchNow }) => {
   const dispatch = useDispatch()
   const { darkTheme: dark } = useSelector(state => state.dark)
   const { chats, error } = useSelector(state => state.chat)
   const { user } = useSelector(state => state.user)
-  const [open, setOpen] = useState(false)
-  const [box, setBox] = useState(0)
   const [search, setSearch] = useState('')
   const [alertVisibility, setAlertVisibility] = useState('hidden')
   const [alertMsg, setAlertMsg] = useState('')
@@ -45,52 +42,29 @@ const Sidebar = ({ fetchNow }) => {
         <div className={`sidebarHeader ${dark && 'dark'}`}>
           <div className="">
             <Tooltip title="My Profile" arrow>
-              <IconButton onClick={() => {
-                setOpen(true)
-                setBox(1)
-              }}>
+              <IconButton onClick={() => dispatch(selectBox(1))}>
                 <User className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Log Out" arrow>
-              <IconButton onClick={() => {
-                setOpen(true)
-                setBox(2)
-              }}>
+              <IconButton onClick={() => dispatch(selectBox(2))}>
                 <Logout className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
           </div>
           <div className="">
             <Tooltip title="New Chat" arrow>
-              <IconButton onClick={() => {
-                setOpen(true)
-                setBox(3)
-              }}>
+              <IconButton onClick={() => dispatch(selectBox(3))}>
                 <PersonAdd className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Groups Joined" arrow>
-              <IconButton onClick={() => {
-                setOpen(true)
-                setBox(4)
-              }}>
-                <Group className={dark && 'dark'} />
-              </IconButton>
-            </Tooltip>
             <Tooltip title="Create New Group" arrow>
-              <IconButton onClick={() => {
-                setOpen(true)
-                setBox(5)
-              }}>
+              <IconButton onClick={() => dispatch(selectBox(4))}>
                 <NewGroup className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Notifications" arrow>
-              <IconButton onClick={() => {
-                setOpen(true)
-                setBox(6)
-              }}>
+              <IconButton onClick={() => dispatch(selectBox(5))}>
                 <Notification className={dark && 'dark'} />
               </IconButton>
             </Tooltip>
@@ -114,6 +88,7 @@ const Sidebar = ({ fetchNow }) => {
             chat={chat}
             msg={chat.latestMsg}
             time='today'
+            isGrp={chat.isGrp}
             name={chat.isGrp ?
               chat.name
               :
@@ -127,7 +102,6 @@ const Sidebar = ({ fetchNow }) => {
             key={chat._id} />)}
         </div>
       </div>
-      <Box open={open} setOpen={setOpen} text={'Start Chat with a new User'} confirm={box === 2 ? 'Logout' : 'Create'} box={box} />
     </>
   )
 }

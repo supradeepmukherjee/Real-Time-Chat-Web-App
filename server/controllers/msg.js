@@ -10,9 +10,8 @@ export const sendMsg = async (req, res) => {
             content,
             chat: id
         })
-        msg = await Msg.populate('sender', 'name')
-        msg = await Msg.populate('receiver')
-        msg = await Msg.populate('chat')
+        msg = await msg.populate('sender', 'name chavi')
+        msg = await msg.populate('chat')
         msg = await User.populate(msg, {
             path: 'chat.users',
             select: 'name email'
@@ -27,7 +26,7 @@ export const sendMsg = async (req, res) => {
 
 export const fetchMsgs = async (req, res) => {
     try {
-        const msgs = await Msg.find({ chat: req.params.id }).populate('sender receiver chat')
+        const msgs = await Msg.find({ chat: req.params.id }).populate('sender','name chavi email').populate('chat')
         res.status(200).json({ success: true, msgs })
     } catch (err) {
         console.log(err);

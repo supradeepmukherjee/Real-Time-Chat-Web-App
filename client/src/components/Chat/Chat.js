@@ -3,7 +3,7 @@ import { chatStarted } from '../../Slices/Welcome'
 import { useDispatch } from 'react-redux'
 import { selectChat } from '../../Slices/CurrentChat'
 
-const Chat = ({ msg, time, name, chavi, chat }) => {
+const Chat = ({ msg, time, name, chavi, chat, isGrp }) => {
   const dispatch = useDispatch()
   return (
     <div
@@ -17,7 +17,7 @@ const Chat = ({ msg, time, name, chavi, chat }) => {
         {name}
       </p>
       <p className="chatMsg">
-        {msg}
+        {isGrp && `${msg.sender.name}: `}{msg.content.length > 50 ? `${msg.content.substring(0, 33)}...` : msg.content}
       </p>
       <p className="chatTime">
         {time}

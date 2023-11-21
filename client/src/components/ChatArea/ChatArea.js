@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material"
-import Delete from "@mui/icons-material/Delete";
+import Info from "@mui/icons-material/Info";
 import Send from "@mui/icons-material/Send";
 import MyMsg from "../MyMsg/MyMsg";
 import OtherMsg from "../OtherMsg/OtherMsg";
@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMsgs, sendMsg } from '../../Actions/Msg'
 import Alert from '../Alert'
 import alert from '../../alert'
+import Feed from 'react-scrollable-feed'
 import './ChatArea.css'
+import { selectBox } from "../../Slices/Box";
 
 let socket
 const ChatArea = ({ fetchNow, setFetchNow }) => {
@@ -53,8 +55,10 @@ const ChatArea = ({ fetchNow, setFetchNow }) => {
   }, [])
   useEffect(() => {
     dispatch(getMsgs(chat._id))
+  }, [chat._id, dispatch])
+  useEffect(() => {
     setMsgs(msgs)
-  }, [chat._id, dispatch, msgs])
+  }, [msgs])
   useEffect(() => {
     if (error) alert('error', setAlertType, error, setAlertMsg, setAlertVisibility, dispatch)
     if (sendError) alert('error', setAlertType, sendError, setAlertMsg, setAlertVisibility, dispatch)
@@ -78,13 +82,21 @@ const ChatArea = ({ fetchNow, setFetchNow }) => {
                 (chat.users[0]._id === user?._id ? chat.users[1].name : chat.users[0].name)}
             </div>
           </div>
-          <IconButton>
-            <Delete />
+          <IconButton onClick={() => dispatch(selectBox(6))}>
+            <Info />
           </IconButton>
         </div>
         <div className="chatAreaMsgs">
-          <MyMsg msg={'I am sendingsendingsendingsendingsendingsendingsendingsendingsendingsendingsendingv a new msg to test this component'} time='10:00' />
-          <OtherMsg name={'dusra koi'} msg='sending a new msg to test this component' time='10:00' />
+          <Feed>
+            {Msgs?.map(msg => {
+              return (
+                msg.sender._id === user._id ?
+                  <MyMsg msg={msg.content} time='10:00' />
+                  :
+                  <OtherMsg name={msg.sender.name} msg={msg.content} time='10:00' />
+              )
+            })}
+          </Feed>
         </div>
         <form className="chatAreaInput" onSubmit={sendMsgHandler}>
           <input type="text" placeholder="Send a Message" name="" id="search" onChange={typingHandler} value={Msg} />

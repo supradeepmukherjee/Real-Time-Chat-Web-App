@@ -47,7 +47,7 @@ export const allUsers = async (req, res) => {
                 $regex: req.query.name,
                 $options: 'i'
             },
-            // _id: { $ne: req.user._id }
+            _id: { $ne: req.user._id }
         })
         res.status(200).json({ users, success: true })
     } catch (err) {
@@ -60,6 +60,15 @@ export const myProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
         res.status(200).json({ success: true, user, msg: 'User fetched successfully' })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, msg: err.msg })
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+        res.status(200).cookie('token', null, { expires: new Date(Date.now()), httpOnly: true }).json({ success: true, msg: 'Logged Out' })
     } catch (err) {
         console.log(err);
         res.status(500).json({ success: false, msg: err.msg })

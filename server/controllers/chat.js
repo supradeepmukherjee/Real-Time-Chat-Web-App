@@ -61,7 +61,7 @@ export const fetchChats = async (req, res) => {
 
 export const createGrp = async (req, res) => {
     try {
-        let users = JSON.parse(req.body.users)
+        let users = req.body.users
         users.push(req.user)
         const grpChat = await Chat.create({
             name: req.body.name,

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import Sidebar from '../Sidebar/Sidebar'
 import ChatArea from '../ChatArea/ChatArea'
 import './Home.css'
+import Box from '../Box/Box'
 
 const Home = () => {
   const { user } = useSelector(state => state.user)
@@ -24,6 +25,7 @@ const Home = () => {
               </p>
             </div>
           }
+          <Box/>
         </>}
     </>
   )

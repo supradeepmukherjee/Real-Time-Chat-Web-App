@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { chatReducer } from './Reducers/Chat'
-import { passwordReducer, updateMyProfileReducer, userProfileReducer, userReducer } from './Reducers/User'
+import { passwordReducer, userReducer } from './Reducers/User'
 import { welcomeReducer } from './Slices/Welcome'
 import { themeReducer } from './Slices/Theme'
 import { currentChatReducer } from './Slices/CurrentChat'
 import { getMsgsReducer, sendMsgReducer } from './Reducers/Msg'
+import { boxReducer } from './Slices/Box'
 
 const store = configureStore({
     reducer: {
@@ -12,11 +13,10 @@ const store = configureStore({
         user: userReducer,
         welcome: welcomeReducer,
         chat: chatReducer,
+        box: boxReducer,
         currentChat: currentChatReducer,
         sendMsg: sendMsgReducer,
         getMsgs: getMsgsReducer,
-        userProfile: userProfileReducer,
-        updateMyProfile: updateMyProfileReducer,
         password: passwordReducer,
     },
     // devTools: false

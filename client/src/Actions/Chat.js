@@ -33,3 +33,20 @@ export const accessChat_ = id => async dispatch => {
         })
     }
 }
+
+export const newGrp = (name, users) => async dispatch => {
+    try {
+        dispatch({ type: 'newGrpRequest' })
+        const { data } = await axios.post(`/api/chat/newgrp`, { name, users }, { headers: { 'Content-Type': 'application/json' } })
+        dispatch({
+            type: 'newGrpSuccess',
+            payload: data.grp
+        })
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: 'newGrpFailure',
+            payload: err.response.data.msg
+        })
+    }
+}
