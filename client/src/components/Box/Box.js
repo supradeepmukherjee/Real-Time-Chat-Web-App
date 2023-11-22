@@ -7,6 +7,7 @@ import { allUsers, logout } from '../../Actions/User'
 import { accessChat_, newGrp } from '../../Actions/Chat'
 import { boxClosed, selectBox } from '../../Slices/Box'
 import { Chip, Stack } from '@mui/material';
+import './Box.css'
 
 const Box = () => {
     let text, src, otherUser
@@ -99,13 +100,119 @@ const Box = () => {
                     <>
                         {box === 4 &&
                             <TextField id='standard-basic' label='Name' variant='outlined' name='name' onChange={e => setGrpName(e.target.value)} value={grpName} sx={{ margin: '0 3vw' }} />}
-                        <TextField id='standard-basic' label={box === 4 ? 'Search Users' : 'Name'} variant='outlined' name='name' onChange={e => setSearch(e.target.value)} value={search} sx={{ margin: '0 3vw' }} />
+                        <TextField id='standard-basic' label={box === 4 ? 'Search Users' : 'Name'} variant='outlined' name='name' onChange={e => setSearch(e.target.value)} value={search} sx={{ margin: '2vw 3vw' }} />
                         {box === 4 &&
-                            <Stack direction="row" spacing={1}>
+                            <Stack direction="row" spacing={1} className='stack'>
+                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
+                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
+                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
+                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
+                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
+                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
                                 {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
                             </Stack>
                         }
-                        <div className="users_groups_List">
+                        <div className="users_groups_List boxList">
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
+                            {users && users.map(user => {
+                                return (
+                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
+                                        <p className="chatTitle">
+                                            {user.name}
+                                        </p>
+                                    </div>)
+                            }
+                            )}
                             {users && users.map(user => {
                                 return (
                                     <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">

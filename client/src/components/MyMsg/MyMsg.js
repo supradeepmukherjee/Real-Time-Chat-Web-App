@@ -1,10 +1,10 @@
 import './MyMsg.css'
 
-const MyMsg = ({ msg,time }) => {
+const MyMsg = ({ msg, time, extra }) => {
     return (
-        <div className='myMsg'>
+        <div className={`myMsg ${extra && 'extra'}`}>
             <div className="msgBox">
-                <p>
+                <p className='msgText'>
                     {msg}
                 </p>
                 <p className="myMsgTime">

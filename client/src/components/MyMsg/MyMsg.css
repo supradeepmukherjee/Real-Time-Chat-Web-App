@@ -3,13 +3,16 @@
     justify-content: flex-end;
 }
 
+.msgText {
+    max-width: 46vw;
+}
+
 .msgBox {
     display: flex;
     background-color: #63d7b0;
     width: max-content;
-    flex-direction: column;
     padding: 10px;
-    margin: 5px;
+    margin: 2px;
     max-width: 50vw;
     overflow-wrap: break-word;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -23,6 +26,7 @@
 .myMsgTime {
     align-self: flex-end;
     font-size: .65rem;
+    margin-left: 6px;
     font-weight: lighter;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

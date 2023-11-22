@@ -19,11 +19,6 @@ const userSchema = new mongoose.Schema({
         minLength: [8, 'Password must be of minimum 8 characters'],
         select: false
     },
-    isAdmin: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
     chavi: String
 },
     { timestamps: true }

@@ -17,7 +17,7 @@ const Chat = ({ msg, time, name, chavi, chat, isGrp }) => {
         {name}
       </p>
       <p className="chatMsg">
-        {isGrp && `${msg.sender.name}: `}{msg.content.length > 50 ? `${msg.content.substring(0, 33)}...` : msg.content}
+        {/* {isGrp && `${msg.sender.name}: `}{msg.content.length > 50 ? `${msg.content.substring(0, 33)}...` : msg.content} */}
       </p>
       <p className="chatTime">
         {time}

@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux'
 import './OtherMsg.css'
 
-const OtherMsg = ({ name, msg, time, chavi }) => {
+const OtherMsg = ({ name, msg, time, chavi, show, extra }) => {
     const { chat } = useSelector(state => state.currentChat)
     return (
-        <div className='otherMsg'>
-            {chat.isGrp && <img src={chavi} alt='chavi' className="chatPhoto" />}
+        <div className={`otherMsg ${extra && 'extra'}`}>
+            {chat.isGrp && show && <img src={chavi} alt='chavi' className="chatPhoto" />}
             <div className="otherMsgContent">
                 {chat.isGrp &&
                     <p className="chatTitle">

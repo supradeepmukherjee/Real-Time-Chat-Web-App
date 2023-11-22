@@ -88,12 +88,33 @@ const ChatArea = ({ fetchNow, setFetchNow }) => {
         </div>
         <div className="chatAreaMsgs">
           <Feed>
-            {Msgs?.map(msg => {
+            {Msgs?.map((msg, i) => {
               return (
                 msg.sender._id === user._id ?
-                  <MyMsg msg={msg.content} time='10:00' />
+                  <MyMsg msg={msg.content} time='10:00' extra={
+                    i < Msgs.length - 1 && Msgs[i + 1].sender._id !== msg.sender._id
+                  } />
                   :
-                  <OtherMsg name={msg.sender.name} msg={msg.content} time='10:00' />
+                  <OtherMsg
+                    name={msg.sender.name}
+                    msg={msg.content}
+                    time='10:00'
+                    show={
+                      (
+                        i < Msgs.length - 1 &&
+                        ((Msgs[i + 1].sender._id !== msg.sender._id ||
+                          Msgs[i + 1].sender._id === undefined) ||
+                          Msgs[i + 1].sender._id === user._id)
+                      )
+                      ||
+                      (
+                        i === Msgs.length - 1 &&
+                        Msgs[Msgs.length - 1].sender._id !== user._id
+                      )
+                    }
+                    extra={
+                      i < Msgs.length - 1 && Msgs[i + 1].sender._id !== msg.sender._id
+                    } />
               )
             })}
           </Feed>
