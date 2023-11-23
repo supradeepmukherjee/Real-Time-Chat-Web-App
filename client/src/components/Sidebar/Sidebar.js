@@ -17,7 +17,7 @@ import alert from '../../alert'
 import './Sidebar.css'
 import { selectBox } from '../../Slices/Box'
 
-const Sidebar = ({ fetchNow }) => {
+const Sidebar = () => {
   const dispatch = useDispatch()
   const { darkTheme: dark } = useSelector(state => state.dark)
   const { chats, error } = useSelector(state => state.chat)
@@ -31,10 +31,10 @@ const Sidebar = ({ fetchNow }) => {
       dispatch(getChats(search))
     }, 1200);
     return () => clearTimeout(wait)
-  }, [dispatch, search, fetchNow])
+  }, [dispatch, search])
   useEffect(() => {
     if (error) alert('error', setAlertType, error, setAlertMsg, setAlertVisibility, dispatch)
-  }, [dispatch, error, fetchNow])
+  }, [dispatch, error])
   return (
     <>
       <Alert alertVisibility={alertVisibility} alertMsg={alertMsg} alertType={alertType} />

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Sidebar from '../Sidebar/Sidebar'
 import ChatArea from '../ChatArea/ChatArea'
@@ -9,14 +8,13 @@ const Home = () => {
   const { user } = useSelector(state => state.user)
   const { darkTheme: dark } = useSelector(state => state.dark)
   const { welcomeScreen } = useSelector(state => state.welcome)
-  const [fetchNow, setFetchNow] = useState(false)
   return (
     <>
       {user &&
         <>
-          <Sidebar fetchNow={fetchNow} />
+          <Sidebar />
           {!welcomeScreen ?
-            <ChatArea fetchNow={fetchNow} setFetchNow={setFetchNow} />
+            <ChatArea />
             :
             <div className={`welcome ${dark && 'dark'}`}>
               <img src="/icon-512.png" alt="Logo" className='welcomeLogo' />
@@ -25,7 +23,7 @@ const Home = () => {
               </p>
             </div>
           }
-          <Box/>
+          <Box />
         </>}
     </>
   )

@@ -97,6 +97,7 @@ const ChatArea = ({ fetchNow, setFetchNow }) => {
                   :
                   <OtherMsg
                     name={msg.sender.name}
+                    chavi={msg.sender.chavi}
                     msg={msg.content}
                     time='10:00'
                     show={

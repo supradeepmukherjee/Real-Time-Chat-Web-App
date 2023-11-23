@@ -1,5 +1,9 @@
 .otherMsg {
-    background-color: #d9d9d9;
+    display: flex;
+    gap: 5px;
+}
+
+.otherMsgContent {
     width: max-content;
     flex-direction: column;
     padding: 10px;
@@ -12,9 +16,11 @@
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
-}
-
-.otherMsgContent {
     display: flex;
     flex-direction: column;
+    background-color: #d9d9d9;
+}
+.moveRight{
+    position: relative;
+    left: 45px;
 }

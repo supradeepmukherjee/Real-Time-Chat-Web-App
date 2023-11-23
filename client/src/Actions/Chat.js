@@ -34,10 +34,10 @@ export const accessChat_ = id => async dispatch => {
     }
 }
 
-export const newGrp = (name, users) => async dispatch => {
+export const newGrp = (name, users, chavi) => async dispatch => {
     try {
         dispatch({ type: 'newGrpRequest' })
-        const { data } = await axios.post(`/api/chat/newgrp`, { name, users }, { headers: { 'Content-Type': 'application/json' } })
+        const { data } = await axios.post(`/api/chat/newgrp`, { name, users, chavi }, { headers: { 'Content-Type': 'application/json' } })
         dispatch({
             type: 'newGrpSuccess',
             payload: data.grp

@@ -1,5 +1,6 @@
 import { User } from '../models/User.js'
 import { Chat } from '../models/Chat.js'
+import cloudinary from 'cloudinary'
 
 export const accessChat = async (req, res) => {
     try {
@@ -61,13 +62,19 @@ export const fetchChats = async (req, res) => {
 
 export const createGrp = async (req, res) => {
     try {
-        let users = req.body.users
+        let { users, name, chavi } = req.body
         users.push(req.user)
+        const myCloud = await cloudinary.v2.uploader.upload(chavi, {
+            folder: 'ChatChavi',
+            width: 150,
+            crop: 'scale'
+        })
         const grpChat = await Chat.create({
-            name: req.body.name,
+            name,
             users,
             isGrp: true,
-            grpAdmin: req.user
+            grpAdmin: req.user,
+            chavi: myCloud.secure_url
         })
         const readyGrp = await Chat.findOne({ _id: grpChat._id }).populate('users').populate('grpAdmin')
         res.status(200).json({ success: true, grp: readyGrp })

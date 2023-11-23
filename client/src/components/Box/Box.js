@@ -4,23 +4,41 @@ import { useDispatch, useSelector } from 'react-redux'
 import Alert from '../Alert'
 import alert from '../../alert'
 import { allUsers, logout } from '../../Actions/User'
-import { accessChat_, newGrp } from '../../Actions/Chat'
+import { accessChat_, getChats, newGrp } from '../../Actions/Chat'
 import { boxClosed, selectBox } from '../../Slices/Box'
 import { Chip, Stack } from '@mui/material';
 import './Box.css'
 
 const Box = () => {
-    let text, src, otherUser
+    let text, src, otherUser, people
     const dispatch = useDispatch()
     const { users, error, user } = useSelector(state => state.user)
     const { box, open } = useSelector(state => state.box)
     const { chat } = useSelector(state => state.currentChat)
+    const { loading, chats, error: chatsError } = useSelector(state => state.chat)
     const [search, setSearch] = useState('')
     const [grpName, setGrpName] = useState('')
     const [alertVisibility, setAlertVisibility] = useState('hidden')
     const [alertMsg, setAlertMsg] = useState('')
     const [alertType, setAlertType] = useState('')
     const [members, setMembers] = useState([])
+    const [chavi, setChavi] = useState('https://res.cloudinary.com/dsjluiazl/image/upload/v1700731332/ChatChavi/grp_xaooke.png')
+    let filteredUsers=users
+    for (let i = 0; i < users?.length; i++) {
+        const currentUser = users[i];
+        for (let j = 0; j < chats.length; j++) {
+            const element = chats[j];
+            if (element.name === 'sender') {
+                for (let k = 0; k < 2; k++) {
+                    if (element.users[k]._id !== user._id) {
+                        if (element.users[k]._id !== currentUser._id) {
+                            filteredUsers = users.filter(user => user._id === currentUser._id)
+                        }
+                    }
+                }
+            }
+        }
+    }
     if (box === 1) {
         text = 'My Profile'
         src = user.chavi
@@ -30,29 +48,44 @@ const Box = () => {
     }
     else if (box === 3) {
         text = 'Start a new Chat'
+        people = filteredUsers
     }
     else if (box === 4) {
         text = 'Create a new Group'
+        people = users
     }
     else if (box === 5) {
         text = 'Notifications'
     }
     else if (box === 6) {
-        otherUser = (chat.users[0]._id === user?._id ? chat.users[1] : chat.users[0])
-        text = `${otherUser.name}'s Profile`
-        src = otherUser.chavi
+        if (chat.isGrp) {
+            text = `Group: ${chat.name}`
+            src = chat.chavi
+            people = chat.users
+        } else {
+            otherUser = (chat.users[0]._id === user?._id ? chat.users[1] : chat.users[0])
+            text = `${otherUser.name}'s Profile`
+            src = otherUser.chavi
+        }
     }
     const boxToggle = () => open ? dispatch(boxClosed()) : dispatch(selectBox(box))
     const accessChat = async id => {
         dispatch(boxClosed())
         dispatch(accessChat_(id))
+        dispatch(getChats(''))
+    }
+    const chaviHandler = async e => {
+        const reader = new FileReader()
+        reader.readAsDataURL(e.target.files[0])
+        reader.onload = () => {
+            if (reader.readyState === 2) setChavi(reader.result)
+        }
     }
     const submit = async e => {
         if (box === 2) {
             await dispatch(logout())
             dispatch(boxClosed())
         } else {
-            console.log(members)
             if (grpName === '') {
                 return alert('error', setAlertType, 'Group Name can\'t be blank', setAlertMsg, setAlertVisibility, dispatch)
             }
@@ -60,12 +93,16 @@ const Box = () => {
                 return alert('error', setAlertType, 'Please select atleast 1 user', setAlertMsg, setAlertVisibility, dispatch)
             }
             alert('info', setAlertType, 'Please Wait', setAlertMsg, setAlertVisibility, dispatch)
-            await dispatch(newGrp(grpName, members))
+            await dispatch(newGrp(grpName, members, chavi))
             dispatch(boxClosed())
         }
     }
     const addHandler = user => {
         if (!members.includes(user)) setMembers([...members, user])
+    }
+    const personClickHandler = user => {
+        if (box === 3) accessChat(user._id)
+        else if (box === 6) addHandler(user)
     }
     useEffect(() => {
         const wait = setTimeout(() => {
@@ -75,7 +112,8 @@ const Box = () => {
     }, [dispatch, search])
     useEffect(() => {
         if (error) alert('error', setAlertType, error, setAlertMsg, setAlertVisibility, dispatch)
-    }, [dispatch, error])
+        if (chatsError) alert('error', setAlertType, chatsError, setAlertMsg, setAlertVisibility, dispatch)
+    }, [chatsError, dispatch, error])
     return (
         <>
             <Alert alertVisibility={alertVisibility} alertMsg={alertMsg} alertType={alertType} />
@@ -87,135 +125,30 @@ const Box = () => {
                     {(box === 1 || box === 6) &&
                         <>
                             <Avatar src={src} alt='Founder' style={{ width: '20vmax', height: '20vmax' }} />
-                            <Typography>
+                            {!chat.isGrp && <Typography>
                                 Name: <b>{box === 1 ? user.name : otherUser.name}</b>
-                            </Typography>
+                            </Typography>}
                             {box === 1 &&
                                 <Typography>
                                     Email: <b>{user.email}</b>
                                 </Typography>}
                         </>}
                 </div>
-                {(box === 3 || box === 4) &&
+                {(box === 3 || box === 4 || box === 6) &&
                     <>
                         {box === 4 &&
                             <TextField id='standard-basic' label='Name' variant='outlined' name='name' onChange={e => setGrpName(e.target.value)} value={grpName} sx={{ margin: '0 3vw' }} />}
-                        <TextField id='standard-basic' label={box === 4 ? 'Search Users' : 'Name'} variant='outlined' name='name' onChange={e => setSearch(e.target.value)} value={search} sx={{ margin: '2vw 3vw' }} />
+                        {box !== 6 &&
+                            <TextField id='standard-basic' label={box === 4 ? 'Search Users' : 'Name'} variant='outlined' name='name' onChange={e => setSearch(e.target.value)} value={search} sx={{ margin: '2vw 3vw' }} />}
                         {box === 4 &&
                             <Stack direction="row" spacing={1} className='stack'>
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
                                 {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
                             </Stack>
                         }
                         <div className="users_groups_List boxList">
-                            {users && users.map(user => {
+                            {people?.map(user => {
                                 return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
-                                        <img src={user.chavi} alt="chavi" className="chatPhoto" />
-                                        <p className="chatTitle">
-                                            {user.name}
-                                        </p>
-                                    </div>)
-                            }
-                            )}
-                            {users && users.map(user => {
-                                return (
-                                    <div key={user._id} onClick={() => { box === 3 ? accessChat(user._id) : addHandler(user) }} className="users_groups_ListItem">
+                                    <div key={user._id} onClick={() => personClickHandler(user)} className="users_groups_ListItem">
                                         <img src={user.chavi} alt="chavi" className="chatPhoto" />
                                         <p className="chatTitle">
                                             {user.name}
@@ -224,6 +157,11 @@ const Box = () => {
                             }
                             )}
                         </div>
+                        {box === 4 &&
+                            <div className='registerImg' style={{ textAlign: 'center' }}>
+                                <img src={chavi} alt="Chavi Preview" />
+                                <input type="file" name='chavi' accept='image/*' onChange={chaviHandler} />
+                            </div>}
                     </>}
                 <DialogActions>
                     <Button onClick={boxToggle} color='secondary'>

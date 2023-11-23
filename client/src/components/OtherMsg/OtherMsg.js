@@ -6,12 +6,12 @@ const OtherMsg = ({ name, msg, time, chavi, show, extra }) => {
     return (
         <div className={`otherMsg ${extra && 'extra'}`}>
             {chat.isGrp && show && <img src={chavi} alt='chavi' className="chatPhoto" />}
-            <div className="otherMsgContent">
+            <div className={`otherMsgContent ${chat.isGrp && !show && 'moveRight'}`}>
                 {chat.isGrp &&
                     <p className="chatTitle">
                         {name}
                     </p>}
-                <p className="chatMsg" style={{ marginLeft: 0 }}>
+                <p className="chatMsg">
                     {msg}
                 </p>
                 <p className="myMsgTime">
