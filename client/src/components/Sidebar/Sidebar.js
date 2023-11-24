@@ -11,11 +11,11 @@ import Chat from '../Chat/Chat'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getChats } from '../../Actions/Chat'
-import { darkTheme, lightTheme } from '../../Slices/Theme'
+import { darkTheme, lightTheme } from '../../ActionsReducers/Theme'
 import Alert from '../Alert'
 import alert from '../../alert'
 import './Sidebar.css'
-import { selectBox } from '../../Slices/Box'
+import { selectBox } from '../../ActionsReducers/Box'
 
 const Sidebar = () => {
   const dispatch = useDispatch()

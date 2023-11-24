@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { chatReducer } from './Reducers/Chat'
 import { passwordReducer, userReducer } from './Reducers/User'
-import { welcomeReducer } from './Slices/Welcome'
-import { themeReducer } from './Slices/Theme'
-import { currentChatReducer } from './Slices/CurrentChat'
-import { getMsgsReducer, sendMsgReducer } from './Reducers/Msg'
-import { boxReducer } from './Slices/Box'
+import { welcomeReducer } from './ActionsReducers/Welcome'
+import { themeReducer } from './ActionsReducers/Theme'
+import { currentChatReducer } from './ActionsReducers/CurrentChat'
+import { boxReducer } from './ActionsReducers/Box'
+import { notificationsReducer } from './ActionsReducers/Notification'
 
 const store = configureStore({
     reducer: {
@@ -15,8 +15,7 @@ const store = configureStore({
         chat: chatReducer,
         box: boxReducer,
         currentChat: currentChatReducer,
-        sendMsg: sendMsgReducer,
-        getMsgs: getMsgsReducer,
+        notifications: notificationsReducer,
         password: passwordReducer,
     },
     // devTools: false

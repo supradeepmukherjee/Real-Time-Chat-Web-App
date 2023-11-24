@@ -1,7 +1,7 @@
 import './Chat.css'
-import { chatStarted } from '../../Slices/Welcome'
+import { chatStarted } from '../../ActionsReducers/Welcome'
 import { useDispatch } from 'react-redux'
-import { selectChat } from '../../Slices/CurrentChat'
+import { selectChat } from '../../ActionsReducers/CurrentChat'
 
 const Chat = ({ msg, time, name, chavi, chat, isGrp }) => {
   const dispatch = useDispatch()

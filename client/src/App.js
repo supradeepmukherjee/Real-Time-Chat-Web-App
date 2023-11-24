@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css'
 import { loadUser } from './Actions/User';
 
-// TODO: Improve Dark Mode, Make it responsive, make dialog box to 1. seen(if possible) 2. make typing visible 3. auto scroll on new msg 4. add typing animation 5. show time in chat 6. show loading wherever reqd.  ...improve with time
+// TODO: Improve Dark Mode, Make it responsive, make dialog box to 1. seen(if possible) 2. make typing visible 3. auto scroll on new msg 4. show time in chat 5. show loading wherever reqd. 6. show notifications only when active 6. show unread chats ...improve with time
 function App() {
   const dark = useSelector(state => state.dark)
   const { isAuthenticated } = useSelector(state => state.user)

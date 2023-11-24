@@ -6,30 +6,34 @@ import OtherMsg from "../OtherMsg/OtherMsg";
 import io from 'socket.io-client'
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMsgs, sendMsg } from '../../Actions/Msg'
 import Alert from '../Alert'
 import alert from '../../alert'
 import Feed from 'react-scrollable-feed'
 import './ChatArea.css'
-import { selectBox } from "../../Slices/Box";
+import { selectBox } from "../../ActionsReducers/Box";
+import { notificationsF } from "../../ActionsReducers/Notification";
+import axios from "axios";
 
 let socket
 const ChatArea = ({ fetchNow, setFetchNow }) => {
   const dispatch = useDispatch()
   const { chat } = useSelector(state => state.currentChat)
   const { user } = useSelector(state => state.user)
-  const { loading, msgs, error } = useSelector(state => state.getMsgs)
-  const { loading: sendLoading, msg, error: sendError } = useSelector(state => state.sendMsg)
+  const { notifications } = useSelector(state => state.notifications)
   const [socketConnectionStatus, setSocketConnectionStatus] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [sendLoading, setSendLoading] = useState(false)
+  const [typing, setTyping] = useState(false)
   const [alertVisibility, setAlertVisibility] = useState('hidden')
   const [alertMsg, setAlertMsg] = useState('')
   const [alertType, setAlertType] = useState('')
-  const [typing, setTyping] = useState(false)
   const [Msg, setMsg] = useState('')
-  const [Msgs, setMsgs] = useState([])
+  const [msgs, setMsgs] = useState([])
   const typingHandler = e => {
     setMsg(e.target.value)
+    if (!socketConnectionStatus) return
     if (!typing) {
+      socket.emit('typing', chat._id)
       setTyping(true)
     }
     let typingStopTime = new Date().getTime()
@@ -37,32 +41,71 @@ const ChatArea = ({ fetchNow, setFetchNow }) => {
     setTimeout(() => {
       let currTime = new Date().getTime()
       if ((currTime - typingStopTime) > wait && typing) {
+        socket.emit('typing stopped', chat._id)
         setTyping(false)
       }
     }, wait);
   }
   const sendMsgHandler = async e => {
     e.preventDefault()
+    socket.emit('typing stopped', chat._id)
     let trimmedMsg = Msg.trim()
     if (trimmedMsg === '') return
-    await dispatch(sendMsg(chat._id, trimmedMsg))
-    setMsg('')
+    try {
+      setSendLoading(true)
+      const { data } = await axios.post(`/api/msg`, { id: chat._id, content: trimmedMsg }, { headers: { 'Content-Type': 'application/json' } })
+      socket.emit('new msg', data.msg)
+      setMsg('')
+      setMsgs([...msgs, data.msg])
+      setSendLoading(false)
+    } catch (error) {
+      console.log(error)
+      setSendLoading(false)
+      alert('error', setAlertType, 'Some Error Occurred', setAlertMsg, setAlertVisibility, dispatch)
+    }
+  }
+  const getMsgs = async () => {
+    if (!chat) return
+    try {
+      const { data } = await axios.get(`/api/msg/${chat._id}`)
+      setMsgs(data.msgs)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      alert('error', setAlertType, 'Some Error Occurred', setAlertMsg, setAlertVisibility, dispatch)
+    }
   }
   useEffect(() => {
-    // socket = io('/')
-    // socket.emit('setup',)//userdata after ,
-    // socket.on('connection', () => setSocketConnectionStatus(!socketConnectionStatus))
-  }, [])
+    socket = io('/')
+    socket.emit('setup', user)
+    socket.on('connected', () => setSocketConnectionStatus(true))
+    socket.on('typing', () => setTyping(true))
+    socket.on('typing stopped', () => setTyping(false))
+    return () => {
+      socket.off('connected')
+    }
+  }, [user])
   useEffect(() => {
-    dispatch(getMsgs(chat._id))
-  }, [chat._id, dispatch])
+    getMsgs()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chat])
   useEffect(() => {
-    setMsgs(msgs)
-  }, [msgs])
+    socket.emit('join chat', chat._id)
+    return () => {
+      socket.off('join chat')
+    }
+  }, [chat._id])
   useEffect(() => {
-    if (error) alert('error', setAlertType, error, setAlertMsg, setAlertVisibility, dispatch)
-    if (sendError) alert('error', setAlertType, sendError, setAlertMsg, setAlertVisibility, dispatch)
-  }, [dispatch, error, fetchNow, sendError])
+    socket.on('msg received', newMsg => {
+      if (!chat || chat._id !== newMsg.chat._id) {
+        if (!notifications.includes(newMsg)) {
+          dispatch(notificationsF(newMsg))
+        }
+      }
+      else setMsgs([...msgs, newMsg])
+    })
+  })
   return (
     <>
       <Alert alertVisibility={alertVisibility} alertMsg={alertMsg} alertType={alertType} />
@@ -88,33 +131,33 @@ const ChatArea = ({ fetchNow, setFetchNow }) => {
         </div>
         <div className="chatAreaMsgs">
           <Feed>
-            {Msgs?.map((msg, i) => {
+            {msgs?.map((msg, i) => {
               return (
-                msg.sender._id === user._id ?
-                  <MyMsg msg={msg.content} time='10:00' extra={
-                    i < Msgs.length - 1 && Msgs[i + 1].sender._id !== msg.sender._id
+                msg?.sender?._id === user._id ?
+                  <MyMsg msg={msg?.content} time='10:00' extra={
+                    i < msgs.length - 1 && msgs[i + 1].sender._id !== msg.sender._id
                   } />
                   :
                   <OtherMsg
-                    name={msg.sender.name}
-                    chavi={msg.sender.chavi}
+                    name={msg.sender?.name}
+                    chavi={msg.sender?.chavi}
                     msg={msg.content}
                     time='10:00'
                     show={
                       (
-                        i < Msgs.length - 1 &&
-                        ((Msgs[i + 1].sender._id !== msg.sender._id ||
-                          Msgs[i + 1].sender._id === undefined) ||
-                          Msgs[i + 1].sender._id === user._id)
+                        i < msgs.length - 1 &&
+                        ((msgs[i + 1].sender?._id !== msg.sender?._id ||
+                          msgs[i + 1].sender?._id === undefined) ||
+                          msgs[i + 1].sender?._id === user._id)
                       )
                       ||
                       (
-                        i === Msgs.length - 1 &&
-                        Msgs[Msgs.length - 1].sender._id !== user._id
+                        i === msgs.length - 1 &&
+                        msgs[msgs.length - 1].sender?._id !== user._id
                       )
                     }
                     extra={
-                      i < Msgs.length - 1 && Msgs[i + 1].sender._id !== msg.sender._id
+                      i < msgs.length - 1 && msgs[i + 1].sender?._id !== msg.sender?._id
                     } />
               )
             })}

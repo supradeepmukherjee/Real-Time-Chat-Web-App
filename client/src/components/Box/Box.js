@@ -5,12 +5,12 @@ import Alert from '../Alert'
 import alert from '../../alert'
 import { allUsers, logout } from '../../Actions/User'
 import { accessChat_, getChats, newGrp } from '../../Actions/Chat'
-import { boxClosed, selectBox } from '../../Slices/Box'
+import { boxClosed, selectBox } from '../../ActionsReducers/Box'
 import { Chip, Stack } from '@mui/material';
 import './Box.css'
 
 const Box = () => {
-    let text, src, otherUser, people
+    let text, src, otherUser, people, btn
     const dispatch = useDispatch()
     const { users, error, user } = useSelector(state => state.user)
     const { box, open } = useSelector(state => state.box)
@@ -22,8 +22,9 @@ const Box = () => {
     const [alertMsg, setAlertMsg] = useState('')
     const [alertType, setAlertType] = useState('')
     const [members, setMembers] = useState([])
+    const [membersGrp, setMembersGrp] = useState([])
     const [chavi, setChavi] = useState('https://res.cloudinary.com/dsjluiazl/image/upload/v1700731332/ChatChavi/grp_xaooke.png')
-    let filteredUsers=users
+    let filteredUsers = users
     for (let i = 0; i < users?.length; i++) {
         const currentUser = users[i];
         for (let j = 0; j < chats.length; j++) {
@@ -45,6 +46,7 @@ const Box = () => {
     }
     else if (box === 2) {
         text = 'Are you sure you want to Log Out?'
+        btn = 'Log Out'
     }
     else if (box === 3) {
         text = 'Start a new Chat'
@@ -53,6 +55,7 @@ const Box = () => {
     else if (box === 4) {
         text = 'Create a new Group'
         people = users
+        btn = 'Create'
     }
     else if (box === 5) {
         text = 'Notifications'
@@ -62,6 +65,7 @@ const Box = () => {
             text = `Group: ${chat.name}`
             src = chat.chavi
             people = chat.users
+            btn = 'Update'
         } else {
             otherUser = (chat.users[0]._id === user?._id ? chat.users[1] : chat.users[0])
             text = `${otherUser.name}'s Profile`
@@ -105,6 +109,9 @@ const Box = () => {
         else if (box === 6) addHandler(user)
     }
     useEffect(() => {
+        if (chat?.isGrp) setMembersGrp(chat?.users)
+    }, [chat?.isGrp, chat?.users])
+    useEffect(() => {
         const wait = setTimeout(() => {
             dispatch(allUsers(search))
         }, 1200);
@@ -125,7 +132,7 @@ const Box = () => {
                     {(box === 1 || box === 6) &&
                         <>
                             <Avatar src={src} alt='Founder' style={{ width: '20vmax', height: '20vmax' }} />
-                            {!chat.isGrp && <Typography>
+                            {!chat?.isGrp && <Typography>
                                 Name: <b>{box === 1 ? user.name : otherUser.name}</b>
                             </Typography>}
                             {box === 1 &&
@@ -140,9 +147,18 @@ const Box = () => {
                             <TextField id='standard-basic' label='Name' variant='outlined' name='name' onChange={e => setGrpName(e.target.value)} value={grpName} sx={{ margin: '0 3vw' }} />}
                         {box !== 6 &&
                             <TextField id='standard-basic' label={box === 4 ? 'Search Users' : 'Name'} variant='outlined' name='name' onChange={e => setSearch(e.target.value)} value={search} sx={{ margin: '2vw 3vw' }} />}
-                        {box === 4 &&
+                        {(box === 4 || (box === 6 && chat.isGrp && chat.grpAdmin._id === user._id)) &&
                             <Stack direction="row" spacing={1} className='stack'>
-                                {members.map(member => <Chip label={member.name} variant="outlined" key={member._id} onDelete={() => setMembers(members.filter(u => u._id !== member._id))} />)}
+                                {(box === 4 ? members : membersGrp).map(member => <Chip
+                                    label={member.name}
+                                    variant="outlined"
+                                    key={member._id}
+                                    onDelete={() => {
+                                        box === 4 ?
+                                            setMembers(members.filter(u => u._id !== member._id))
+                                            :
+                                            setMembersGrp(members.filter(u => u._id !== member._id))
+                                    }} />)}
                             </Stack>
                         }
                         <div className="users_groups_List boxList">
@@ -168,10 +184,10 @@ const Box = () => {
                         Close
                     </Button>
                     {
-                        (box === 2 || box === 4)
+                        (box === 2 || box === 4 || (box === 6 && chat.isGrp))
                         &&
                         <Button color='primary' onClick={submit}>
-                            {box === 2 ? 'Log Out' : 'Create'}
+                            {btn}
                         </Button>
                     }
                 </DialogActions>
